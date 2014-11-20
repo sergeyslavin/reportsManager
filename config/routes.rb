@@ -3,8 +3,10 @@ Rails.application.routes.draw do
   get 'dashboard', to:"dashboard#index"
 
   namespace :admin do
-    resources :reports
+    resources :templates
   end
+  
+  resources :reports
 
   devise_for :users
 

@@ -1,4 +1,4 @@
-class Admin::ReportsController < ApplicationController
+class ReportsController < ApplicationController
   before_action :set_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
 
@@ -24,17 +24,17 @@ class Admin::ReportsController < ApplicationController
   def create
     @report = Report.new(report_params)
     @report.save
-    respond_with([:admin, @report])
+    respond_with(@report)
   end
 
   def update
     @report.update(report_params)
-    respond_with([:admin, @report])
+    respond_with(@report)
   end
 
   def destroy
     @report.destroy
-    respond_with([:admin, @report])
+    respond_with(@report)
   end
 
   private

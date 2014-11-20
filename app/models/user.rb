@@ -27,11 +27,11 @@ class User
 
 
   def method_missing(method_name, *args, &block)
-		if method_name =~ /^is_(.+)/
-			self.is?($1.chop)
-		else
-			super
-		end
+    if method_name =~ /^is_(.+)/
+      self.is?($1.chop)
+    else
+      super
+    end
   end
 
   def is?(role)
