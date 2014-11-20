@@ -35,3 +35,7 @@ gem "therubyracer"
 gem "less-rails"
 
 gem "twitter-bootstrap-rails"
+
+gem 'bson_ext'
+
+gem 'haml'
