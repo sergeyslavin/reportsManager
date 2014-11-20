@@ -23,14 +23,28 @@ class User
   field :current_sign_in_ip, type: String
   field :last_sign_in_ip,    type: String
 
-  ## Confirmable
-  # field :confirmation_token,   type: String
-  # field :confirmed_at,         type: Time
-  # field :confirmation_sent_at, type: Time
-  # field :unconfirmed_email,    type: String # Only if using reconfirmable
+  embeds_one :role
 
-  ## Lockable
-  # field :failed_attempts, type: Integer, default: 0 # Only if lock strategy is :failed_attempts
-  # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
-  # field :locked_at,       type: Time
+
+  def method_missing(method_name, *args, &block)
+		if method_name =~ /^is_(.+)/
+			self.is?($1.chop)
+		else
+			super
+		end
+  end
+
+  def is?(role)
+    return false if self.role.nil?
+    (self.role.name.eql? role)
+  end
+
+#workaround for mongoid + devise
+  class << self
+    def serialize_from_session(key, salt)
+      record = to_adapter.get(key[0]["$oid"])
+      record if record && record.authenticatable_salt == salt
+    end
+  end
+
 end
