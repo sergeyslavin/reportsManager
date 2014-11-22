@@ -5,9 +5,27 @@
       %ul
         - @report.errors.full_messages.each do |message|
           %li= message
-
+  = hidden_field_tag "report[template_id]", @template.id
   .field
     = f.label :title
     = f.text_field :title
+  - if @template.items.exists?
+    %h3= "#{@template.title} Fields"
+    - @template.items.each do |item|
+      .field
+        = f.label item.name
+        - if @report.item_values.exists?
+          - @report.item_values.each do |item_value|
+
+            - if item.id === item_value.item_id
+              %div
+                = text_field_tag "report[item_value][#{item.id}][]", item_value.value
+                %a#remove_append_value remove
+      %div{id:"append_input_#{item.id}"}
+        = text_field_tag "report[item_value][#{item.id}][]"
+        %a#remove_append_value remove
+      = "<div id='item_#{item.id}'></div>".html_safe
+      = "<a id='add_additon_value' data-id='#{item.id}'>Add addition</a>".html_safe
+
   .actions
     = f.submit 'Save'

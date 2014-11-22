@@ -36,4 +36,5 @@ gem "twitter-bootstrap-rails"
 gem 'bson_ext'
 gem 'moped'
 gem "haml-rails"#, "~> 0.4.0"
+gem "better_errors",     group: :development
 # gem 'multi_json', '1.5.1'

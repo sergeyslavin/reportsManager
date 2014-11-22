@@ -1,6 +1,7 @@
 class Admin::TemplatesController < ApplicationController
   before_action :set_template, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_user!
+  
   respond_to :html
 
   def index
@@ -21,13 +22,27 @@ class Admin::TemplatesController < ApplicationController
   end
 
   def create
-    @template = Template.new(template_params)
-    @template.save
+    @template = Template.create(title: template_params[:title])
+    unless template_params[:item_name].blank?
+      template_params[:item_name].each { |item|
+        @template.items << Item.new(name: item) unless item.empty?
+      }
+    end
+
     respond_with([:admin, @template])
   end
 
   def update
-    @template.update(template_params)
+    @template.items.clear
+
+    @template.update_attributes(title: template_params[:title])
+
+    unless template_params[:item_name].blank?
+      template_params[:item_name].each { |item|
+        @template.items << Item.new(name: item) unless item.empty?
+      }
+    end
+
     respond_with([:admin, @template])
   end
 
@@ -42,6 +57,6 @@ class Admin::TemplatesController < ApplicationController
     end
 
     def template_params
-      params.require(:template).permit(:title)
+      params.require(:template).permit(:title, :item_name => [])
     end
 end

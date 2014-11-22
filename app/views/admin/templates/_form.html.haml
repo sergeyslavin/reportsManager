@@ -9,5 +9,19 @@
   .field
     = f.label :title
     = f.text_field :title
+  - if @template.items.exists?
+    - @template.items.each do |item|
+      .field
+        = f.label :item_name
+        = text_field_tag "template[item_name][]", item.name
+        %a#remove_added_field remove
+  - else
+    .field
+      = f.label :item_name
+      = text_field_tag "template[item_name][]"
+      %a#remove_added_field remove
+  #item_name_div
+
+  %a.btn.btn-primary#add_new_item Add new item
   .actions
     = f.submit 'Save'

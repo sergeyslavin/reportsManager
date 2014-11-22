@@ -1,0 +1,5 @@
+- unless @templates.empty?
+	- @templates.each do |template|
+		%p= link_to template.title, "#{new_report_path}?template=#{template.id}"
+- else
+	Reports not exists

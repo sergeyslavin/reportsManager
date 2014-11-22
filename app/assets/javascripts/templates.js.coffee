@@ -1,3 +1,12 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+$ ->
+	$(document).on 'click', '#add_new_item', ->
+		$('#item_name_div').append('<div class="field">
+        <label for="template_item_name">Item name</label>
+        <input type="text" name="template[item_name][]" id="template_item_name">
+        <a id="remove_added_field">remove</a>
+      </div>')
+
+		return false
+
+	$(document).on 'click', '#remove_added_field', ->
+		$(@).parent().remove()
