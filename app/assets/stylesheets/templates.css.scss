@@ -1,3 +1,33 @@
 #remove_added_field {
 	cursor: pointer;
 }
+
+.report_fields_div {
+  width: 350px;
+  .field {
+  	label {
+      width: 150px;
+  	}
+  	input {
+      width: 150px;
+  	}
+  }
+}
+
+#templates_form {
+  input[type="submit"] {
+    margin-top: 20px;
+  }
+}
+
+.back-btn {
+  background: none repeat scroll 0 0 #ccc;
+  display: inline-block;
+  height: 26px;
+  left: 0;
+  line-height: 25px;
+  padding-left: 2px;
+  position: fixed;
+  top: 51px;
+  width: 40px;	
+}

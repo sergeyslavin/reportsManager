@@ -1,3 +1,35 @@
+$grayColor: #ccc;
+
 #add_additon_value, #remove_append_value {
 	cursor: pointer;
+}
+#add_new_item {
+	margin-top: 30px;
+}
+
+#add_additon_value {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.reports {
+	display: inline-block;
+	.report_item {
+		.report_item_title {
+			font-size: 15px;
+			font-weight: bold;
+			border-bottom: 1px solid $grayColor;
+		}
+
+		width: 120px;
+		border: 1px solid $grayColor;
+		float: left;
+	}
+	.report_item_value {
+	    word-wrap: break-word; /* Перенос слов */ 
+	}
+}
+.bottom_panel {
+	margin-bottom: 40px;
+	margin-top: 20px;
 }

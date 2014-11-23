@@ -1,5 +1,11 @@
+- title "Templates List"
+
+= link_to 'Back', reports_path, class: "back-btn"
+
+%h4 Please, choose template!
+
 - unless @templates.empty?
 	- @templates.each do |template|
 		%p= link_to template.title, "#{new_report_path}?template=#{template.id}"
 - else
-	Reports not exists
+	%h4 Template does not exist!

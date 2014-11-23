@@ -1,9 +1,17 @@
-%p#notice= notice
+- title "Show Template: #{@template.title}"
+
+= link_to 'Back', admin_templates_path, class: "back-btn"
+
+= print_notice notice
 
 %p
-  %b Title:
-  = @template.title
+	%b Title:
+	= @template.title
+- if @template.items.exists?
+	%h3 Item list
+	%ol
+		- @template.items.each do |item|
+			%li= item.name
 
-= link_to 'Edit', edit_admin_template_path(@template)
-\|
-= link_to 'Back', admin_templates_path
+= link_to 'Edit', edit_admin_template_path(@template), class: "btn btn-info"
+

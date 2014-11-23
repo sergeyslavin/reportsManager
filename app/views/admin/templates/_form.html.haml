@@ -1,27 +1,25 @@
-= form_for [:admin, @template] do |f|
-  - if @template.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@template.errors.count, "error")} prohibited this template from being saved:"
-      %ul
-        - @template.errors.full_messages.each do |msg|
-          %li= msg
-
-  .field
-    = f.label :title
-    = f.text_field :title
-  - if @template.items.exists?
-    - @template.items.each do |item|
+= form_for [:admin, @template], html: { id: "templates_form" } do |f|
+  = error_field @template
+    
+  .report_fields_div
+    .field
+      = f.label :title
+      = f.text_field :title
+    - if @template.items.exists?
+      - @template.items.each do |item|
+        .field
+          = f.label :item_name
+          = text_field_tag "template[item_name][]", item.name
+          %a#remove_added_field
+            %i.glyphicon.glyphicon-trash
+    - else
       .field
         = f.label :item_name
-        = text_field_tag "template[item_name][]", item.name
-        %a#remove_added_field remove
-  - else
-    .field
-      = f.label :item_name
-      = text_field_tag "template[item_name][]"
-      %a#remove_added_field remove
-  #item_name_div
+        = text_field_tag "template[item_name][]"
+        %a#remove_added_field
+          %i.glyphicon.glyphicon-trash
+    #item_name_div
 
-  %a.btn.btn-primary#add_new_item Add new item
-  .actions
-    = f.submit 'Save'
+    %a.btn.btn-primary#add_new_item Add new item
+    .actions
+      = f.submit 'Save'

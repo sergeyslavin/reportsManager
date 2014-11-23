@@ -2,6 +2,9 @@ class ReportsController < ApplicationController
   before_action :set_report, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
 
+  load_and_authorize_resource :except => [:show, :index]
+  skip_load_resource :only => [:create]
+
   respond_to :html
 
   def index
@@ -10,12 +13,13 @@ class ReportsController < ApplicationController
   end
 
   def show
+    @items_value = @report.item_values.group_by { |e| e.item_id }
     respond_with(@report)
   end
 
   def new
     @report = Report.new
-    @template = nil
+    @template ||= nil
 
     unless params[:template].nil?
       @template = Template.find(params[:template])
@@ -35,9 +39,9 @@ class ReportsController < ApplicationController
   end
 
   def create
-    template = Template.find(report_params[:template_id])
-    @report = Report.new(title: report_params[:title])
-    template.reports << @report
+    @template = Template.find(report_params[:template_id])
+    @report = Report.create(title: report_params[:title])
+    @template.reports << @report
 
     unless report_params[:item_value].blank?      
       report_params[:item_value].each { |item_id, items|
@@ -47,11 +51,19 @@ class ReportsController < ApplicationController
       }
     end
 
-    respond_with(@report)
+    if @report.save
+      flash[:notice] = "Report successfully create!"
+      respond_with(@report)
+    else
+      render "new"
+    end
   end
 
   def update
-    @report.update_attributes(title: report_params[:title])
+    @template = Template.find(report_params[:template_id])
+    
+    return render "edit" unless @report.update_attributes(title: report_params[:title])
+
     @report.item_values.clear
 
     unless report_params[:item_value].blank?      
@@ -62,6 +74,7 @@ class ReportsController < ApplicationController
       }
     end
 
+    flash[:notice] = "Report successfully update!"
     respond_with(@report)
   end
 

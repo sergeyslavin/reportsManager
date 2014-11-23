@@ -4,6 +4,7 @@ class User
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  before_create :add_default_role
 
   ## Database authenticatable
   field :email,              type: String, default: ""
@@ -26,6 +27,10 @@ class User
   embeds_one :role
 
 
+  def add_default_role
+    self.role ||= Role.new(name: "reporter")
+  end
+
   def method_missing(method_name, *args, &block)
     if method_name =~ /^is_(.+)/
       self.is?($1.chop)
@@ -46,5 +51,7 @@ class User
       record if record && record.authenticatable_salt == salt
     end
   end
+
+  private :add_default_role
 
 end
