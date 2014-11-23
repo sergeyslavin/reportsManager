@@ -2,6 +2,6 @@
 
 Reports Manager
 
-Add role to user rake manager:add_role email=test@test.com role=reporter
+Add role to user "rake manager:add_role email=test@test.com role=reporter"
 
-Allow only two roles: admin, reporter
+Allow only two roles: "admin, reporter"
