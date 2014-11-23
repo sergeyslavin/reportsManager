@@ -1,4 +1,4 @@
-namespace :manage do
+namespace :manager do
 
   task :add_role => [:environment] do
     raise "User email should be specified!" if ENV['email'].nil?
@@ -9,8 +9,11 @@ namespace :manage do
 
     raise "Role should be 'admin' or 'reporter'" unless ["admin", "reporter"].include? user_role
 
-    user_by_email = User.where(email: user_email).first
-    user_by_email.role = Role.new(name: user_role)
+    user_by_email = User.where(email: user_email)
+
+    raise 'User not found!' if user_by_email.nil?
+    
+    user_by_email.first.role = Role.new(name: user_role)
 
     p "Done!"
   end
