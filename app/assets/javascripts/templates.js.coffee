@@ -2,7 +2,7 @@ $ ->
   $(document).on 'click', '#add_new_item', ->
     $('#item_name_div').append('<div class="field">
         <label for="template_item_name">Item name</label>
-        <input type="text" name="template[item_name][]" id="template_item_name">
+        <input type="text" name="template[item_name][0][]" id="template_item_name">
         <a id="remove_added_field"><i class="glyphicon glyphicon-trash"></i></a>
       </div>')
 

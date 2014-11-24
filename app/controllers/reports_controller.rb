@@ -43,7 +43,7 @@ class ReportsController < ApplicationController
     @report = Report.create(title: report_params[:title])
     @template.reports << @report
 
-    unless report_params[:item_value].blank?      
+    unless report_params[:item_value].blank?
       report_params[:item_value].each { |item_id, items|
         items.each { |item_value|
           @report.item_values << ItemValue.new(value: item_value, item_id: item_id)
@@ -61,12 +61,12 @@ class ReportsController < ApplicationController
 
   def update
     @template = Template.find(report_params[:template_id])
-    
+
     return render "edit" unless @report.update_attributes(title: report_params[:title])
 
     @report.item_values.clear
 
-    unless report_params[:item_value].blank?      
+    unless report_params[:item_value].blank?
       report_params[:item_value].each { |item_id, items|
         items.each { |item_value|
           @report.item_values << ItemValue.new(value: item_value, item_id: item_id) unless item_value.empty?

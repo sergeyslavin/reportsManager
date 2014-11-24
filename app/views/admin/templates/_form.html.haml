@@ -1,6 +1,6 @@
 = form_for [:admin, @template], html: { id: "templates_form" } do |f|
   = error_field @template
-    
+
   .report_fields_div
     .field
       = f.label :title
@@ -9,13 +9,13 @@
       - @template.items.each do |item|
         .field
           = f.label :item_name
-          = text_field_tag "template[item_name][]", item.name
+          = text_field_tag "template[item_name][#{item.id}][]", item.name
           %a#remove_added_field
             %i.glyphicon.glyphicon-trash
     - else
       .field
         = f.label :item_name
-        = text_field_tag "template[item_name][]"
+        = text_field_tag "template[item_name][0][]"
         %a#remove_added_field
           %i.glyphicon.glyphicon-trash
     #item_name_div

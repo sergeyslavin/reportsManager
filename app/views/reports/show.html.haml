@@ -7,9 +7,11 @@
   = @report.title
 .reports
   - @items_value.each do |key, item_values|
-    .report_item
-      .report_item_title= Item.find(key).name
-      - item_values.each do |item_value|
-        .report_item_value= item_value.value
+    - item = Item.where(id: key)
+    - unless item.empty?
+      .report_item
+        .report_item_title= item.first.name
+        - item_values.each do |item_value|
+          .report_item_value= item_value.value
 .bottom_panel
   = link_to 'Edit', edit_report_path(@report), class:"btn btn-info"

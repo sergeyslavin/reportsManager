@@ -1,10 +1,10 @@
 class Admin::TemplatesController < ApplicationController
   before_action :set_template, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
-  
+
   load_and_authorize_resource
   skip_load_resource :only => [:create]
-  
+
   respond_to :html
 
   def index
@@ -28,8 +28,10 @@ class Admin::TemplatesController < ApplicationController
     @template = Template.create(title: template_params[:title])
 
     unless template_params[:item_name].blank?
-      template_params[:item_name].each { |item|
-        @template.items << Item.new(name: item) unless item.empty?
+      template_params[:item_name].each { |zero_id, items|
+        items.each { |name|
+          @template.items << Item.new(name: name) unless name.empty?
+        }
       }
     end
 
@@ -43,15 +45,37 @@ class Admin::TemplatesController < ApplicationController
 
   def update
     return render "edit" unless @template.update_attributes(title: template_params[:title])
-    
-    @template.items.clear
-    
+
+    # @template.items.clear
+
+    updated_items = []
+
     unless template_params[:item_name].blank?
-      template_params[:item_name].each { |item|
-        @template.items << Item.new(name: item) unless item.empty?
+      template_params[:item_name].each { |item_id, item_values|
+
+        if !@template.items.exists? or item_id.eql? "0"
+          item_values.each { |item_name|
+            unless item_name.blank?
+              created_item = Item.new(name: item_name)
+              @template.items << created_item
+              updated_items << created_item.id
+            end
+          }
+        else
+          item_values.each { |item_name|
+            unless item_name.blank?
+              @template.items.find(item_id).update_attributes(name: item_name)
+              updated_items << item_id
+            end
+          }
+        end
       }
+
+      removed_items = Item.not_in(:_id => updated_items)
+      removed_items.delete_all
+
     end
-    
+
     flash[:notice] = "Template successfully update!"
     respond_with([:admin, @template])
   end
